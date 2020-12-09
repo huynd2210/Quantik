@@ -43,4 +43,13 @@ public class Board {
 //        20 21 22 23
 //        30 31 32 33
     }
+
+    public void print(){
+        for (int i = 0; i < cell.length; i++) {
+            for (int j = 0; j < cell[i].length; j++) {
+                System.out.print(cell[i][j]);
+            }
+            System.out.println();
+        }
+    }
 }

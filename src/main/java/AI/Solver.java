@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Solver {
-    public static List<StateData> getNextStates(StateData root){
+    public static List<StateData> getNextStates(StateData root) {
         List<StateData> nextStates = new ArrayList<>();
-        if (root.isWhiteTurn()){
-            for (int i = 0; i < root.getBoard().size; i++){
-                for (int j = 0; j < root.getBoard().size; j++){
-                    for (Piece p : root.getWhitePlayer().getHand()){
-                        if (LogicEngine.isLegalMove(root.getBoard(), p, i, j)){
+        if (root.isWhiteTurn()) {
+            for (int i = 0; i < root.getBoard().size; i++) {
+                for (int j = 0; j < root.getBoard().size; j++) {
+                    for (Piece p : root.getWhitePlayer().getHand()) {
+                        if (LogicEngine.isLegalMove(root.getBoard(), p, i, j)) {
                             StateData copy = new StateData(root);
                             copy.getParentHash().add(root.getHash());
                             root.getChildrenHash().add(copy.getHash());
@@ -24,11 +24,11 @@ public class Solver {
                     }
                 }
             }
-        }else{
-            for (int i = 0; i < root.getBoard().size; i++){
-                for (int j = 0; j < root.getBoard().size; j++){
-                    for (Piece p : root.getBlackPlayer().getHand()){
-                        if (LogicEngine.isLegalMove(root.getBoard(), p, i, j)){
+        } else {
+            for (int i = 0; i < root.getBoard().size; i++) {
+                for (int j = 0; j < root.getBoard().size; j++) {
+                    for (Piece p : root.getBlackPlayer().getHand()) {
+                        if (LogicEngine.isLegalMove(root.getBoard(), p, i, j)) {
                             StateData copy = new StateData(root);
                             copy.getParentHash().add(root.getHash());
                             root.getChildrenHash().add(copy.getHash());
@@ -42,7 +42,4 @@ public class Solver {
         }
         return nextStates;
     }
-
-
-
 }

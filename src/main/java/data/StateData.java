@@ -23,6 +23,19 @@ public class StateData {
     private Player whitePlayer;
     private Player blackPlayer;
 
+    public StateData(){
+        this.board = new Board();
+        this.isWhiteTurn = true;
+        this.isEnd = false;
+        this.winner = null;
+        this.stateValue = 0;
+        this.parentHash = new ArrayList<>();
+        this.childrenHash = new ArrayList<>();
+        this.whitePlayer = new Player(true);
+        this.blackPlayer = new Player(false);
+        this.hash = hashCode();
+    }
+
     public StateData(Board board, boolean isWhiteTurn, boolean isEnd){
         this.board = board;
         this.isWhiteTurn = isWhiteTurn;
@@ -87,5 +100,12 @@ public class StateData {
         result = 31 * result + (whitePlayer != null ? whitePlayer.hashCode() : 0);
         result = 31 * result + (blackPlayer != null ? blackPlayer.hashCode() : 0);
         return result;
+    }
+
+    public void print(){
+        this.getBoard().print();
+        System.out.println(this.isWhiteTurn);
+        System.out.println(this.whitePlayer);
+        System.out.println(this.blackPlayer);
     }
 }

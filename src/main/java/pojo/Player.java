@@ -3,11 +3,13 @@ package pojo;
 import data.PieceList;
 import enumeration.Shape;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@ToString
 public class Player {
     private List<Piece> hand;
     private boolean isWhite;
@@ -32,6 +34,7 @@ public class Player {
     }
 
     public void initPlayer(boolean isWhite){
+        this.hand = new ArrayList<>();
         if (isWhite){
             this.hand.add(PieceList.whiteSphere);
             this.hand.add(PieceList.whiteSphere);
