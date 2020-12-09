@@ -15,7 +15,7 @@ public class LogicEngine {
         Piece copy = new Piece(piece);
         if (board.cell[i][j].piece == null && player.getHand().contains(copy)) {
             board.cell[i][j].piece = copy;
-            player.getHand().remove(copy);
+//            player.getHand().remove(copy);
         }
     }
 

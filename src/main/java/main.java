@@ -14,11 +14,6 @@ public class main {
 //        System.out.println(test);
 
         StateData root = new StateData();
-        root.getBoard().print();
-        System.out.println("----------");
-        System.out.println(Solver.getNextStates(root));
-
-
 
 //        System.out.println("--------------");
 //        LogicEngine.move(root.getWhitePlayer(), root.getBoard(), root.getWhitePlayer().getHand().get(0), 0,0);
