@@ -26,4 +26,19 @@ public class Cell {
         sb.append("]");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cell)) return false;
+
+        Cell cell = (Cell) o;
+
+        return piece != null ? piece.equals(cell.piece) : cell.piece == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return piece != null ? piece.hashCode() : 0;
+    }
 }

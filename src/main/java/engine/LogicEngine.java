@@ -2,6 +2,7 @@ package engine;
 
 import AI.Solver;
 import data.StateData;
+import enumeration.Shape;
 import pojo.*;
 
 import java.util.HashSet;
@@ -9,13 +10,14 @@ import java.util.Set;
 
 public class LogicEngine {
     public static void move(Player player, Board board, Piece piece, int i, int j) {
-        if (!isLegalMove(board, piece, i, j)) {
-            return;
-        }
+//        if (!isLegalMove(board, piece, i, j)) {
+//            return;
+//        }
         Piece copy = new Piece(piece);
         if (board.cell[i][j].piece == null && player.getHand().contains(copy)) {
             board.cell[i][j].piece = copy;
-//            player.getHand().remove(copy);
+            board.piecePlacementHistory.add(new Piece(copy));
+            player.getHand().remove(copy);
         }
     }
 
@@ -67,9 +69,9 @@ public class LogicEngine {
     }
 
     public static boolean isEnd(Board board, boolean isWhiteTurn) {
-        if (Solver.getNextStates(new StateData(board, isWhiteTurn, false)).isEmpty()) {
-            return true;
-        }
+//        if (Solver.getNextStates(new StateData(board, isWhiteTurn, false)).isEmpty()) {
+//            return true;
+//        }
         for (int i = 0; i < board.size; i++) {
             if (isEndByRow(board, i)) {
                 return true;
@@ -84,12 +86,12 @@ public class LogicEngine {
     }
 
     private static boolean isEndByRow(Board board, int i) {
-        Set<Piece> pieceSet = new HashSet<>();
+        Set<Shape> pieceSet = new HashSet<>();
         for (int j = 0; j < board.size; j++) {
             if (board.cell[i][j].piece == null) {
                 return false;
             } else {
-                pieceSet.add(board.cell[i][j].piece);
+                pieceSet.add(board.cell[i][j].piece.shape);
             }
         }
 
@@ -97,12 +99,12 @@ public class LogicEngine {
     }
 
     private static boolean isEndByCol(Board board, int j) {
-        Set<Piece> pieceSet = new HashSet<>();
+        Set<Shape> pieceSet = new HashSet<>();
         for (int i = 0; i < board.size; i++) {
             if (board.cell[i][j].piece == null) {
                 return false;
             } else {
-                pieceSet.add(board.cell[i][j].piece);
+                pieceSet.add(board.cell[i][j].piece.shape);
 
             }
         }
@@ -112,15 +114,15 @@ public class LogicEngine {
     private static boolean isEndByRegion(Board board) {
 
         for (Region region : board.regions) {
-            Set<Piece> pieceSet = new HashSet<>();
+            Set<Shape> shapeSet = new HashSet<>();
             for (Cell c : region.getCellList()) {
                 if (c.piece == null) {
                     return false;
                 } else {
-                    pieceSet.add(c.piece);
+                    shapeSet.add(c.piece.shape);
                 }
             }
-            if (pieceSet.size() != 4) {
+            if (shapeSet.size() != 4) {
                 return false;
             }
         }

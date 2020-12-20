@@ -1,12 +1,8 @@
 
-Q
-java:S1068
-"/Remove this unused "isWhiteTurn" private field.(€»ŠÄüÿÿÿÿ8åĞàùá.
+Z	java:S106l"9Replace this use of System.out or System.err by a logger.(³ÈÜ¾ıÿÿÿÿ8¹ÒÊä.
+U	java:S106k"9Replace this use of System.out or System.err by a logger.(Ó«Šé8¹ÒÊä.
+U	java:S106n"9Replace this use of System.out or System.err by a logger.(îì¢Ü8Ğ£ñå.
+Z	java:S106m"9Replace this use of System.out or System.err by a logger.(âÑÒ‚şÿÿÿÿ8¹ÒÊä.
+X	java:S125]"<This block of commented-out lines of code should be removed.(¥Ô‹î8­Íóå.
 K
-java:S1068	")Remove this unused "board" private field.(åÌ–®şÿÿÿÿ8åĞàùá.
-J
-java:S1068"(Remove this unused "hash" private field.(–ü’ıøÿÿÿÿ8åĞàùá.
-F
-java:S1068")Remove this unused "isEnd" private field.(üåãî8³Óáùá.
-P
-java:S1068".Remove this unused "stateValue" private field.(âôçüÿÿÿÿ8³Óáùá.
+java:S1481[")Remove this unused "temp" local variable.(‹¸Òÿÿÿÿÿ8­Íóå.

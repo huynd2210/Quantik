@@ -33,7 +33,7 @@ public class StateData {
         this.childrenHash = new ArrayList<>();
         this.whitePlayer = new Player(true);
         this.blackPlayer = new Player(false);
-        this.hash = hashCode();
+        this.hash = this.hashCode();
     }
 
     public StateData(Board board, boolean isWhiteTurn, boolean isEnd){
@@ -93,12 +93,12 @@ public class StateData {
         result = 31 * result + (isWhiteTurn ? 1 : 0);
         result = 31 * result + (isEnd ? 1 : 0);
         result = 31 * result + (winner != null ? winner.hashCode() : 0);
-        temp = Double.doubleToLongBits(stateValue);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (parentHash != null ? parentHash.hashCode() : 0);
-        result = 31 * result + (childrenHash != null ? childrenHash.hashCode() : 0);
-        result = 31 * result + (whitePlayer != null ? whitePlayer.hashCode() : 0);
-        result = 31 * result + (blackPlayer != null ? blackPlayer.hashCode() : 0);
+//        temp = Double.doubleToLongBits(stateValue);
+//        result = 31 * result + (int) (temp ^ (temp >>> 32));
+//        result = 31 * result + (parentHash != null ? parentHash.hashCode() : 0);
+//        result = 31 * result + (childrenHash != null ? childrenHash.hashCode() : 0);
+//        result = 31 * result + (whitePlayer != null ? whitePlayer.hashCode() : 0);
+//        result = 31 * result + (blackPlayer != null ? blackPlayer.hashCode() : 0);
         return result;
     }
 
@@ -107,5 +107,6 @@ public class StateData {
         System.out.println(this.isWhiteTurn);
         System.out.println(this.whitePlayer);
         System.out.println(this.blackPlayer);
+        System.out.println(this.hashCode());
     }
 }

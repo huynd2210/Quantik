@@ -1,5 +1,13 @@
 
-C
-java:S11720"&Remove these unused method parameters.(¼»ã8¾æ×Ùá.
+]	java:S125"<This block of commented-out lines of code should be removed.(İúµÿÿÿÿÿ8õ¸ÒÊä.
+L
+java:S1066/"/Merge this if statement with the enclosing one.(¤æ­ä8õ¸ÒÊä.
+L
+java:S1066 "/Merge this if statement with the enclosing one.(›ñÁ¶8õ¸ÒÊä.
 \
-java:S1118":Add a private constructor to hide the implicit public one.(É£èÓşÿÿÿÿ8ÍãÒåà.
+java:S1118
+":Add a private constructor to hide the implicit public one.(É£èÓşÿÿÿÿ8ÍãÒåà.
+C
+java:S11727"&Remove these unused method parameters.(¼»ã8¾æ×Ùá.
+L
+java:S1066;"/Merge this if statement with the enclosing one.(ÏØ®â8õ¸ÒÊä.

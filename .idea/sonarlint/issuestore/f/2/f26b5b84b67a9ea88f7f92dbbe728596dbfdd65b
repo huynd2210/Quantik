@@ -1,8 +1,3 @@
 
 P
 java:S1128".Remove this unused import 'enumeration.Shape'.(äÒ›’ıÿÿÿÿ8ÔŠåà.
-p
-java:S1104
-"SMake isWhite a static final constant or non-public and provide accessors if needed.(’Ô«¾8Šêäà.
-m
-java:S1104	"PMake hand a static final constant or non-public and provide accessors if needed.(äÏÊ»8Šêäà.

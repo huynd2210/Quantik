@@ -40,6 +40,7 @@ public class Piece {
         Piece piece = (Piece) o;
 
         if (isWhite != piece.isWhite) return false;
+        if (symbol != piece.symbol) return false;
         return shape == piece.shape;
     }
 
@@ -47,6 +48,11 @@ public class Piece {
     public int hashCode() {
         int result = (isWhite ? 1 : 0);
         result = 31 * result + (shape != null ? shape.hashCode() : 0);
+        result = 31 * result + (int) symbol;
         return result;
+    }
+
+    public int hashShape(){
+        return shape.hashCode();
     }
 }
