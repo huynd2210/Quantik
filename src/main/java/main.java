@@ -1,7 +1,5 @@
 import AI.Solver;
 import data.StateData;
-import engine.LogicEngine;
-import org.javatuples.Pair;
 
 import java.util.*;
 
@@ -26,7 +24,40 @@ public class main {
                 }
             }
         }
+    }
 
+    private static Map<Character, List<Integer>> findAllCharacterIndex(String string) {
+        Set<Character> characterSet = new HashSet<>();
+        for (Character c : string.toCharArray()) {
+            characterSet.add(c);
+        }
+        Map<Character, List<Integer>> result = new HashMap<>();
+        for (Character character : characterSet) {
+            List<Integer> indexList = new ArrayList<>();
+            int index = string.indexOf(character);
+            while (index >= 0) {
+                indexList.add(index);
+                index = string.indexOf(character, index + 1);
+            }
+            result.put(character, indexList);
+        }
+//
+        return result;
+    }
+
+    private static int placementHistoryHash(String string) {
+        StringBuilder placementHistory = new StringBuilder();
+        for (Character c : string.toCharArray()) {
+            placementHistory.append(c);
+        }
+        int hash = 1;
+        Map<Character, List<Integer>> indexMap = findAllCharacterIndex(placementHistory.toString());
+        System.out.println(indexMap);
+        for (List<Integer> integers : indexMap.values()) {
+            Collections.sort(integers);
+            hash += integers.hashCode();
+        }
+        return hash;
     }
 
     public static void main(String[] args) {
@@ -41,10 +72,26 @@ public class main {
         List<StateData> tp = Solver.getNextStates(root);
         StateData grandChild = new StateData(tp.get(0));
         List<StateData> gtp = Solver.getNextStates(grandChild);
+        StateData grandgrandChild = new StateData(gtp.get(0));
+        List<StateData> ggtp = Solver.getNextStates(grandgrandChild);
 
-        for (StateData stateData : tp){
+        for (StateData stateData : ggtp){
             stateData.print();
         }
+
+
+//        String first = "SbS";
+//        String firstEqual = "CbC";
+//        String second = "SbB";
+//        String secondEqual = "CaA";
+//
+//        System.out.println(placementHistoryHash(first));
+//        System.out.println("-----------");
+//        System.out.println(placementHistoryHash(firstEqual));
+//        System.out.println("-----------");
+//        System.out.println(placementHistoryHash(second));
+//        System.out.println("-----------");
+//        System.out.println(placementHistoryHash(secondEqual));
 
 
 //        char[][] matrix = {

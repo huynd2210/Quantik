@@ -72,10 +72,9 @@ public class Board {
     @Override
     public int hashCode() {
         int result = 0;
-        List<Pair<Integer, Integer>> indexList = new ArrayList<>();
         Pair<Integer, List<Pair<Integer, Integer>>> firstRotation = boardHash(this.cell);
         result = 31 * result + firstRotation.getValue0();
-        indexList.addAll(firstRotation.getValue1());
+        List<Pair<Integer, Integer>> indexList = new ArrayList<>(firstRotation.getValue1());
         for (int i = 1; i < 4; i++) {
             Cell[][] tmp = rotateMatrix(this.cell, i);
             Pair<Integer, List<Pair<Integer, Integer>>> otherRotation = boardHash(tmp);
@@ -83,25 +82,10 @@ public class Board {
             indexList.addAll(otherRotation.getValue1());
         }
 
-//        System.out.println("----------");
-//        this.print();
-//        System.out.println("current Hash");
-//        System.out.println(result);
-//        System.out.println("----------");
-
-
-//        for (Pair<Integer, Integer> index : indexList) {
-//            result += hashPair(index);
-//            System.out.println("Index: " + index);
-//            System.out.println("Index Hash: " + hashPair(index));
-//            System.out.println("Result: " + result);
-//
-//        }
         Collections.sort(indexList);
         result += indexList.hashCode();
 
-
-//        result = 31 * result + placementHistoryHash();
+        result = 31 * result + placementHistoryHash();
         return result;
     }
 
@@ -113,9 +97,8 @@ public class Board {
         int hash = 1;
         Map<Character, List<Integer>> indexMap = findAllCharacterIndex(placementHistory.toString());
         for (List<Integer> integers : indexMap.values()) {
-            for (Integer index : integers) {
-                hash += index;
-            }
+            Collections.sort(integers);
+            hash += integers.hashCode();
         }
         return hash;
     }
@@ -183,7 +166,7 @@ public class Board {
         return copy;
     }
 
-    private int hashPair(Pair<Integer, Integer> pair){
+    private int hashPair(Pair<Integer, Integer> pair) {
         int result = pair.getValue0();
         result = 31 * result + pair.getValue1();
         return result;

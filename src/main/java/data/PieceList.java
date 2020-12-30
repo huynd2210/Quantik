@@ -11,5 +11,5 @@ public class PieceList {
     public static final Piece whitePyramid = new Piece(Shape.PYRAMID, true, 'P');
     public static final Piece blackPyramid = new Piece(Shape.PYRAMID, false, 'p');
     public static final Piece whiteSquare = new Piece(Shape.SQUARE, true, 'B');
-    public static final Piece blackSquare = new Piece(Shape.SQUARE, true, 'b');
+    public static final Piece blackSquare = new Piece(Shape.SQUARE, false, 'b');
 }
