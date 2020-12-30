@@ -1,13 +1,15 @@
 
-]	java:S125"<This block of commented-out lines of code should be removed.(İúµÿÿÿÿÿ8õ¸ÒÊä.
 L
-java:S1066/"/Merge this if statement with the enclosing one.(¤æ­ä8õ¸ÒÊä.
+java:S1066="/Merge this if statement with the enclosing one.(ÏØ®â8õ¸ÒÊä.
 L
-java:S1066 "/Merge this if statement with the enclosing one.(›ñÁ¶8õ¸ÒÊä.
-\
-java:S1118
-":Add a private constructor to hide the implicit public one.(É£èÓşÿÿÿÿ8ÍãÒåà.
+java:S1066""/Merge this if statement with the enclosing one.(›ñÁ¶8õ¸ÒÊä.
+O
+java:S1172G"2Remove this unused method parameter "isWhiteTurn".(¢¡öÛ8Öú¶‹è.
+]	java:S125"<This block of commented-out lines of code should be removed.(İ´¤ ıÿÿÿÿ8’åîõç.
+]	java:S125H"<This block of commented-out lines of code should be removed.(æùüËşÿÿÿÿ8Öú¶‹è.
 C
-java:S11727"&Remove these unused method parameters.(¼»ã8¾æ×Ùá.
+java:S11729"&Remove these unused method parameters.(¼»ã8¾æ×Ùá.
 L
-java:S1066;"/Merge this if statement with the enclosing one.(ÏØ®â8õ¸ÒÊä.
+java:S10661"/Merge this if statement with the enclosing one.(¤æ­ä8õ¸ÒÊä.
+\
+java:S1118":Add a private constructor to hide the implicit public one.(É£èÓşÿÿÿÿ8ÍãÒåà.

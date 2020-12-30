@@ -39,17 +39,12 @@ public class Piece {
 
         Piece piece = (Piece) o;
 
-        if (isWhite != piece.isWhite) return false;
-        if (symbol != piece.symbol) return false;
-        return shape == piece.shape;
+        return isWhite == piece.isWhite;
     }
 
     @Override
     public int hashCode() {
-        int result = (isWhite ? 1 : 0);
-        result = 31 * result + (shape != null ? shape.hashCode() : 0);
-        result = 31 * result + (int) symbol;
-        return result;
+        return (isWhite ? 3 : 0);
     }
 
     public int hashShape(){

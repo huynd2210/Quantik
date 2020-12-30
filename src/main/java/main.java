@@ -1,44 +1,32 @@
 import AI.Solver;
 import data.StateData;
 import engine.LogicEngine;
+import org.javatuples.Pair;
 
 import java.util.*;
 
 public class main {
-
-
-    private static Map<Character, List<Integer>> findAllCharacterIndex(String string) {
-        Set<Character> characterSet = new HashSet<>();
-        for (Character c : string.toCharArray()) {
-            characterSet.add(c);
-        }
-        Map<Character, List<Integer>> result = new HashMap<>();
-        for (Character character : characterSet) {
-            List<Integer> indexList = new ArrayList<>();
-            int index = string.indexOf(character);
-            while (index >= 0) {
-                indexList.add(index);
-                index = string.indexOf(character, index + 1);
+    public static void rotateMatrix(char[][] matrix, int rotations) {
+        for (int k = 0; k < rotations; k++) {
+            int row = matrix.length;
+            //first find the transpose of the matrix.
+            for (int i = 0; i < row; i++) {
+                for (int j = i; j < row; j++) {
+                    char temp = matrix[i][j];
+                    matrix[i][j] = matrix[j][i];
+                    matrix[j][i] = temp;
+                }
             }
-            result.put(character, indexList);
-        }
-
-        return result;
-    }
-
-    public static int placementHistoryHash(String string) {
-        StringBuilder placementHistory = new StringBuilder();
-        for (Character character : string.toCharArray()) {
-            placementHistory.append(character);
-        }
-        int hash = 1;
-        Map<Character, List<Integer>> indexMap = findAllCharacterIndex(placementHistory.toString());
-        for (List<Integer> integers : indexMap.values()) {
-            for (Integer index : integers) {
-                hash += index;
+            //reverse each row
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < row / 2; j++) {
+                    char temp = matrix[i][j];
+                    matrix[i][j] = matrix[i][row - 1 - j];
+                    matrix[i][row - 1 - j] = temp;
+                }
             }
         }
-        return hash;
+
     }
 
     public static void main(String[] args) {
@@ -47,27 +35,32 @@ public class main {
 //        List<String> test = (List<String>) IOEngine.read("C:\\iotest\\test.txt");
 //        System.out.println(test);
 
-
-//        System.out.println(placementHistoryHash("PaB"));
-//        System.out.println(placementHistoryHash("PbS"));
-//        System.out.println(placementHistoryHash("Sp"));
-
-//        System.out.println(findAllCharacterIndex("PaB").values());
-//        System.out.println(findAllCharacterIndex("PbS").values());
-//        System.out.println(findAllCharacterIndex("Pa").values().iterator().next().hashCode());
-//        System.out.println(findAllCharacterIndex("pb").values().iterator().next().hashCode());
         StateData root = new StateData();
 //        LogicEngine.move(root.getWhitePlayer(), root.getBoard(), root.getWhitePlayer().getHand().get(0), 0, 0);
+
         List<StateData> tp = Solver.getNextStates(root);
         StateData grandChild = new StateData(tp.get(0));
         List<StateData> gtp = Solver.getNextStates(grandChild);
 
-        for (StateData stateData : gtp) {
+        for (StateData stateData : tp){
             stateData.print();
         }
 
 
+//        char[][] matrix = {
+//                {'S', '.', '.'},
+//                {'.', '.', '.'},
+//                {'.', '.', '.'}
+//        };
+//        rotateMatrix(matrix,3);
+//        for (int i = 0; i < matrix.length; i++) {
+//            for (int i1 = 0; i1 < matrix[i].length; i1++) {
+//                System.out.print(matrix[i][i1]);
+//            }
+//            System.out.println();
+//        }
+
+
     }
-
-
 }
+
