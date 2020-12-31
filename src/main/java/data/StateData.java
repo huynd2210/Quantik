@@ -1,5 +1,7 @@
 package data;
 
+import engine.DataProcessor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import pojo.Board;
@@ -56,9 +58,7 @@ public class StateData {
         this.isEnd = copy.isEnd;
         this.stateValue = copy.stateValue;
         this.parentHash = new ArrayList<>();
-        this.parentHash.addAll(copy.parentHash);
         this.childrenHash = new ArrayList<>();
-        this.childrenHash.addAll(copy.childrenHash);
         this.winner = null;
         this.whitePlayer = new Player(copy.whitePlayer);
         this.blackPlayer = new Player(copy.blackPlayer);
@@ -102,11 +102,34 @@ public class StateData {
         return result;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.hash);
+        sb.append(";");
+        sb.append(DataProcessor.boardToNotation(this.board));
+        sb.append(";");
+        sb.append(this.isWhiteTurn);
+        sb.append(";");
+        sb.append(this.isEnd);
+        sb.append(";");
+        sb.append(this.winner);
+        sb.append(";");
+        sb.append(this.stateValue);
+        sb.append(";");
+        sb.append(this.childrenHash);
+        sb.append(";");
+        sb.append(this.parentHash);
+        sb.append("\n");
+        return sb.toString();
+    }
+
     public void print(){
         this.getBoard().print();
         System.out.println(this.isWhiteTurn);
         System.out.println(this.whitePlayer);
         System.out.println(this.blackPlayer);
         System.out.println(this.hashCode());
+        System.out.println(this.toString());
     }
 }

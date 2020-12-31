@@ -3,6 +3,7 @@ package engine;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class IOEngine {
@@ -55,7 +56,7 @@ public class IOEngine {
             FileReader fReader = new FileReader(file);
             bufferedReader = new BufferedReader(fReader);
 
-            output = new ArrayList<String>();
+            output = new ArrayList<>();
 
             while(bufferedReader.ready()) {
                 output.add(bufferedReader.readLine());
@@ -76,7 +77,7 @@ public class IOEngine {
         return output;
     }
 
-    public static void appendToFile(String toAppend, String filePath) {
+    public static void appendToFile(Collection<String> list, String filePath) {
         BufferedWriter bufferedWriter = null;
 
         try {
@@ -89,7 +90,10 @@ public class IOEngine {
 
             FileWriter fWriter = new FileWriter(file, true);
             bufferedWriter = new BufferedWriter(fWriter);
-            bufferedWriter.write(toAppend);
+
+            for (String s : list) {
+                bufferedWriter.write(s + " ");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return;

@@ -1,13 +1,14 @@
 package AI;
 
 import data.StateData;
+import engine.IOEngine;
 import engine.LogicEngine;
 import pojo.Piece;
 
 import java.util.*;
 
 public class Solver {
-    public static List<StateData> getNextStates(StateData root) {
+    public static List<StateData> getNextStates(StateData root, Map<Integer, StateData> transpositionTable) {
         List<StateData> nextStates = new ArrayList<>();
         if (root.isWhiteTurn()) {
             for (int i = 0; i < root.getBoard().size; i++) {
@@ -18,13 +19,17 @@ public class Solver {
                         Piece p = iter.next();
                         if (LogicEngine.isLegalMove(root.getBoard(), p, i, j)) {
                             StateData copy = new StateData(root);
-                            copy.getParentHash().add(root.getHash());
+                            copy.getParentHash().add(root.hashCode());
                             copy.setEnd(LogicEngine.isEnd(root.getBoard(), true));
                             LogicEngine.move(copy.getWhitePlayer(), copy.getBoard(), p, i, j);
                             copy.setWhiteTurn(false);
                             copy.setHash(copy.hashCode());
-                            root.getChildrenHash().add(copy.getHash());
-                            nextStates.add(copy);
+                            root.getChildrenHash().add(copy.hashCode());
+
+                            if (!transpositionTable.containsKey(copy.getHash())) {
+                                nextStates.add(copy);
+                                transpositionTable.put(copy.getHash(), copy);
+                            }
                             iter.remove();
                         }
                     }
@@ -39,13 +44,16 @@ public class Solver {
                         Piece p = iter.next();
                         if (LogicEngine.isLegalMove(root.getBoard(), p, i, j)) {
                             StateData copy = new StateData(root);
-                            copy.getParentHash().add(root.getHash());
+                            copy.getParentHash().add(root.hashCode());
                             copy.setEnd(LogicEngine.isEnd(root.getBoard(), false));
                             LogicEngine.move(copy.getBlackPlayer(), copy.getBoard(), p, i, j);
                             copy.setWhiteTurn(true);
                             copy.setHash(copy.hashCode());
-                            root.getChildrenHash().add(copy.getHash());
-                            nextStates.add(copy);
+                            root.getChildrenHash().add(copy.hashCode());
+                            if (!transpositionTable.containsKey(copy.getHash())) {
+                                nextStates.add(copy);
+                                transpositionTable.put(copy.getHash(), copy);
+                            }
                             iter.remove();
                         }
                     }
@@ -55,7 +63,7 @@ public class Solver {
         return nextStates;
     }
 
-    public void solve(StateData root) {
+    public static void solve(StateData root) {
         LinkedList<StateData> evaluateQueue = new LinkedList<>();
         LinkedList<StateData> store = new LinkedList<>();
         evaluateQueue.add(root);
@@ -63,20 +71,31 @@ public class Solver {
         do {
             while (!evaluateQueue.isEmpty()) {
                 StateData state = evaluateQueue.pop();
-                if (!state.isEnd() && !transpositionTable.containsKey(state.getHash())) {
-                    List<StateData> children = getNextStates(state);
+                if (!state.isEnd()) {
+                    List<StateData> children = getNextStates(state, transpositionTable);
                     store.addAll(children);
-                    transpositionTable.put(state.getHash(), state);
                 }
             }
-
+//            if (store.size() >= 10) {
+//                System.out.println("Test finished");
+//                List<String> write = new ArrayList<>();
+//                for (StateData stateData : store) {
+//                    write.add(stateData.toString());
+//                }
+//                IOEngine.appendToFile(write, "C:\\QuantikStateTable\\Table.txt");
+//                return;
+//            }
             evaluateQueue = copyList(store);
+            List<String> write = new ArrayList<>();
+            for (StateData stateData : store) {
+                write.add(stateData.toString());
+            }
+            IOEngine.appendToFile(write, "C:\\QuantikStateTable\\Table.txt");
             store = new LinkedList<>();
-
         } while (!evaluateQueue.isEmpty());
     }
 
-    private LinkedList<StateData> copyList(List<StateData> first) {
+    private static LinkedList<StateData> copyList(List<StateData> first) {
         LinkedList<StateData> copy = new LinkedList<>();
         for (StateData stateData : first) {
             copy.add(new StateData(stateData));

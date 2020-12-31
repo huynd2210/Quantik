@@ -66,19 +66,21 @@ public class main {
 //        List<String> test = (List<String>) IOEngine.read("C:\\iotest\\test.txt");
 //        System.out.println(test);
 
+//        StateData root = new StateData();
+////        LogicEngine.move(root.getWhitePlayer(), root.getBoard(), root.getWhitePlayer().getHand().get(0), 0, 0);
+//
+//        List<StateData> tp = Solver.getNextStates(root);
+//        StateData grandChild = new StateData(tp.get(0));
+//        List<StateData> gtp = Solver.getNextStates(grandChild);
+//        StateData grandgrandChild = new StateData(gtp.get(0));
+//        List<StateData> ggtp = Solver.getNextStates(grandgrandChild);
+
+//        for (StateData stateData : ggtp){
+//            stateData.print();
+//        }
+
         StateData root = new StateData();
-//        LogicEngine.move(root.getWhitePlayer(), root.getBoard(), root.getWhitePlayer().getHand().get(0), 0, 0);
-
-        List<StateData> tp = Solver.getNextStates(root);
-        StateData grandChild = new StateData(tp.get(0));
-        List<StateData> gtp = Solver.getNextStates(grandChild);
-        StateData grandgrandChild = new StateData(gtp.get(0));
-        List<StateData> ggtp = Solver.getNextStates(grandgrandChild);
-
-        for (StateData stateData : ggtp){
-            stateData.print();
-        }
-
+        Solver.solve(root);
 
 //        String first = "SbS";
 //        String firstEqual = "CbC";
