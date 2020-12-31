@@ -10,7 +10,9 @@ import java.util.*;
 public class Solver {
     public static List<StateData> getNextStates(StateData root, Map<Integer, StateData> transpositionTable) {
         List<StateData> nextStates = new ArrayList<>();
+
         if (root.isWhiteTurn()) {
+            boolean isLegalMoveAvailable = false;
             for (int i = 0; i < root.getBoard().size; i++) {
                 for (int j = 0; j < root.getBoard().size; j++) {
                     StateData tmp = new StateData(root);
@@ -18,9 +20,13 @@ public class Solver {
                     while (iter.hasNext()) {
                         Piece p = iter.next();
                         if (LogicEngine.isLegalMove(root.getBoard(), p, i, j)) {
+                            isLegalMoveAvailable = true;
                             StateData copy = new StateData(root);
                             copy.getParentHash().add(root.hashCode());
                             copy.setEnd(LogicEngine.isEnd(root.getBoard(), true));
+                            if (copy.isEnd()){
+                                copy.setWinner("white");
+                            }
                             LogicEngine.move(copy.getWhitePlayer(), copy.getBoard(), p, i, j);
                             copy.setWhiteTurn(false);
                             copy.setHash(copy.hashCode());
@@ -32,10 +38,16 @@ public class Solver {
                             }
                             iter.remove();
                         }
+
                     }
                 }
             }
+            if (!isLegalMoveAvailable){
+                root.setEnd(true);
+                root.setWinner("black");
+            }
         } else {
+            boolean isLegalMoveAvailable = false;
             for (int i = 0; i < root.getBoard().size; i++) {
                 for (int j = 0; j < root.getBoard().size; j++) {
                     StateData tmp = new StateData(root);
@@ -43,9 +55,13 @@ public class Solver {
                     while (iter.hasNext()) {
                         Piece p = iter.next();
                         if (LogicEngine.isLegalMove(root.getBoard(), p, i, j)) {
+                            isLegalMoveAvailable = true;
                             StateData copy = new StateData(root);
                             copy.getParentHash().add(root.hashCode());
                             copy.setEnd(LogicEngine.isEnd(root.getBoard(), false));
+                            if (copy.isEnd()){
+                                copy.setWinner("black");
+                            }
                             LogicEngine.move(copy.getBlackPlayer(), copy.getBoard(), p, i, j);
                             copy.setWhiteTurn(true);
                             copy.setHash(copy.hashCode());
@@ -58,6 +74,10 @@ public class Solver {
                         }
                     }
                 }
+            }
+            if (!isLegalMoveAvailable){
+                root.setEnd(true);
+                root.setWinner("white");
             }
         }
         return nextStates;
