@@ -77,6 +77,18 @@ public class IOEngine {
         return output;
     }
 
+    public static void appendStringToFile(String string, String filePath){
+        try{
+            File file = new File(filePath);
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(string);
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void appendToFile(Collection<String> list, String filePath) {
         BufferedWriter bufferedWriter = null;
 

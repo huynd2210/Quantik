@@ -9,6 +9,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class LogicEngine {
+    public static void editSetPiece(Board board, Piece piece, int i, int j){
+        Piece copy = new Piece(piece);
+        if (board.cell[i][j].piece == null){
+            board.cell[i][j].piece = copy;
+            board.piecePlacementHistory.add(new Piece(copy));
+        }
+    }
+
     public static void move(Player player, Board board, Piece piece, int i, int j) {
 //        if (!isLegalMove(board, piece, i, j)) {
 //            return;

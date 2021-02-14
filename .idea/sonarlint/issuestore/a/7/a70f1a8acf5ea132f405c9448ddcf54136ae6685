@@ -1,5 +1,11 @@
 
+h
+java:S1192"FDefine a constant instead of duplicating this literal "white" 6 times.(æ‡îÙûÿÿÿÿ8É•†§ó.
 t
-java:S3776
-"RRefactor this method to reduce its Cognitive Complexity from 30 to the 15 allowed.(’®Èøÿÿÿÿ8ú¸ÒÊä.
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 58 to the 15 allowed.(¼ÙòÅûÿÿÿÿ8ë¿åñí.
+h
+java:S1192."FDefine a constant instead of duplicating this literal "black" 5 times.(ËÌ‹Êúÿÿÿÿ8É•†§ó.
+W
+java:S1118":Add a private constructor to hide the implicit public one.(–ûÆ¹8ë¿åñí.
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¥–Ñµúÿÿÿÿ
+]	java:S125f"<This block of commented-out lines of code should be removed.(È¸¿âøÿÿÿÿ8ñ•°Ãï.

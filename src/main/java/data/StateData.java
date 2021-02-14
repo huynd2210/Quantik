@@ -7,9 +7,7 @@ import lombok.Setter;
 import pojo.Board;
 import pojo.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -20,8 +18,8 @@ public class StateData {
     private boolean isEnd;
     private String winner;
     private double stateValue;
-    private List<Integer> parentHash;
-    private List<Integer> childrenHash;
+    private Set<Integer> parentHash;
+    private Set<Integer> childrenHash;
     private Player whitePlayer;
     private Player blackPlayer;
 
@@ -31,8 +29,8 @@ public class StateData {
         this.isEnd = false;
         this.winner = null;
         this.stateValue = 0;
-        this.parentHash = new ArrayList<>();
-        this.childrenHash = new ArrayList<>();
+        this.parentHash = new HashSet<>();
+        this.childrenHash = new HashSet<>();
         this.whitePlayer = new Player(true);
         this.blackPlayer = new Player(false);
         this.hash = this.hashCode();
@@ -44,8 +42,8 @@ public class StateData {
         this.isEnd = isEnd;
         this.winner = null;
         this.stateValue = 0;
-        this.parentHash = new ArrayList<>();
-        this.childrenHash = new ArrayList<>();
+        this.parentHash = new HashSet<>();
+        this.childrenHash = new HashSet<>();
         this.whitePlayer = new Player(true);
         this.blackPlayer = new Player(false);
         this.hash = this.hashCode();
@@ -57,8 +55,8 @@ public class StateData {
         this.isWhiteTurn = copy.isWhiteTurn;
         this.isEnd = copy.isEnd;
         this.stateValue = copy.stateValue;
-        this.parentHash = new ArrayList<>();
-        this.childrenHash = new ArrayList<>();
+        this.parentHash = new HashSet<>();
+        this.childrenHash = new HashSet<>();
         this.winner = null;
         this.whitePlayer = new Player(copy.whitePlayer);
         this.blackPlayer = new Player(copy.blackPlayer);
@@ -129,7 +127,7 @@ public class StateData {
         System.out.println(this.isWhiteTurn);
         System.out.println(this.whitePlayer);
         System.out.println(this.blackPlayer);
-        System.out.println(this.hashCode());
+        System.out.println(this.hash);
         System.out.println(this.toString());
     }
 }

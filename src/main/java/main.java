@@ -1,112 +1,191 @@
 import AI.Solver;
+import data.PieceList;
 import data.StateData;
+import engine.DataProcessor;
+import engine.IOEngine;
+import engine.LogicEngine;
+import org.codehaus.plexus.util.StringUtils;
+import org.javatuples.Pair;
+import pojo.Piece;
+import pojo.Player;
 
+import javax.xml.crypto.Data;
+import javax.xml.stream.events.Characters;
+import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class main {
-    public static void rotateMatrix(char[][] matrix, int rotations) {
-        for (int k = 0; k < rotations; k++) {
-            int row = matrix.length;
-            //first find the transpose of the matrix.
-            for (int i = 0; i < row; i++) {
-                for (int j = i; j < row; j++) {
-                    char temp = matrix[i][j];
-                    matrix[i][j] = matrix[j][i];
-                    matrix[j][i] = temp;
-                }
+    public static List<StateData> load(List<String> data){
+        List<StateData> stateDataList = new ArrayList<>();
+        for (String stateString : data) {
+            if (!StringUtils.isBlank(stateString)){
+                stateDataList.add(DataProcessor.parseNotation(stateString));
             }
-            //reverse each row
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < row / 2; j++) {
-                    char temp = matrix[i][j];
-                    matrix[i][j] = matrix[i][row - 1 - j];
-                    matrix[i][row - 1 - j] = temp;
-                }
-            }
+
         }
+        return stateDataList;
     }
 
-    private static Map<Character, List<Integer>> findAllCharacterIndex(String string) {
-        Set<Character> characterSet = new HashSet<>();
-        for (Character c : string.toCharArray()) {
-            characterSet.add(c);
+    public static void addChildren(){
+        List<String> data = (List<String>) IOEngine.read("C:\\QuantikStateTable\\Table.txt");
+
+        List<StateData> stateDataList = new ArrayList<>();
+        if (data != null){
+            stateDataList = load(data);
         }
-        Map<Character, List<Integer>> result = new HashMap<>();
-        for (Character character : characterSet) {
-            List<Integer> indexList = new ArrayList<>();
-            int index = string.indexOf(character);
-            while (index >= 0) {
-                indexList.add(index);
-                index = string.indexOf(character, index + 1);
+        for (StateData stateData : stateDataList) {
+            if (stateData != null){
+                List<StateData> stateChildrenList = Solver.getNextStates(stateData, new HashMap<>());
+                stateData.setChildrenHash(DataProcessor.hashChildren(stateChildrenList));
+                stateData.print();
             }
-            result.put(character, indexList);
         }
-//
-        return result;
+
+        Set<String> processedData = new HashSet<>();
+
+        for (StateData stateData : stateDataList) {
+            processedData.add(stateData.toString());
+        }
+
+        IOEngine.appendToFile(processedData, "C:\\QuantikStateTable\\NewTable.txt");
     }
 
-    private static int placementHistoryHash(String string) {
-        StringBuilder placementHistory = new StringBuilder();
-        for (Character c : string.toCharArray()) {
-            placementHistory.append(c);
+
+    public static Map<Integer, StateData> initTable(List<StateData> list){
+        Map<Integer, StateData> table = new HashMap<>();
+        for (StateData stateData : list) {
+            table.put(stateData.getHash(), stateData);
         }
-        int hash = 1;
-        Map<Character, List<Integer>> indexMap = findAllCharacterIndex(placementHistory.toString());
-        System.out.println(indexMap);
-        for (List<Integer> integers : indexMap.values()) {
-            Collections.sort(integers);
-            hash += integers.hashCode();
+        return table;
+    }
+
+
+    public static StateData getBestMove(StateData node, Map<Integer, StateData> table){
+        StateData tableNode = table.get(node.getHash());
+
+        List<Pair<StateData, Double>> stateValuePair = new ArrayList<>();
+        for (Integer childHash : tableNode.getChildrenHash()){
+            StateData child = table.get(childHash);
+            stateValuePair.add(new Pair<>(child, child.getStateValue()));
         }
-        return hash;
+
+        double max = stateValuePair.get(0).getValue1();
+
+        Pair<StateData, Double> toReturn = new Pair<>(stateValuePair.get(0).getValue0(), max);
+
+        for (int i = 1; i < stateValuePair.size(); i++){
+            if (stateValuePair.get(i).getValue1() > max){
+                max = stateValuePair.get(i).getValue1();
+                toReturn = new Pair<>(stateValuePair.get(i).getValue0(), max);
+            }
+        }
+        return toReturn.getValue0();
+    }
+
+    //Assume user is blackPlayer
+    public static StateData play(StateData stateData, int i, int j, char piece){
+        //temp init
+        Piece pieceToPlay = PieceList.blackCylinder;
+        if (Character.toLowerCase(piece) == 'p'){
+            pieceToPlay = PieceList.blackPyramid;
+        }else if (Character.toLowerCase(piece) == 's'){
+            pieceToPlay = PieceList.blackSphere;
+        }else if (Character.toLowerCase(piece) == 'b'){
+            pieceToPlay = PieceList.blackSquare;
+        }else if (Character.toLowerCase(piece) == 'c'){
+            pieceToPlay = PieceList.blackCylinder;
+        }
+
+        List<StateData> children = Solver.getNextStates(stateData, new HashMap<>());
+
+        Player player = stateData.getBlackPlayer();
+        LogicEngine.move(player, stateData.getBoard(), pieceToPlay, i , j);
+
+        for (StateData child : children){
+            if (child.getBoard().hashCode() == stateData.getBoard().hashCode()){
+                System.out.println("start");
+                child.getBoard().print();
+                System.out.println(child.getBoard().hashCode());
+                System.out.println();
+                stateData.getBoard().print();
+                System.out.println(stateData.getBoard().hashCode());
+                System.out.println("end");
+
+                return child;
+            }
+        }
+        System.out.println("wtf");
+        return stateData;
     }
 
     public static void main(String[] args) {
-//        List<String> tmp = Arrays.asList("asdsad", "dassac", "qwqrqw");
-//        IOEngine.write(tmp, "C:\\iotest\\test.txt");
-//        List<String> test = (List<String>) IOEngine.read("C:\\iotest\\test.txt");
-//        System.out.println(test);
+//        List<String> data = (List<String>) IOEngine.read("C:\\QuantikStateTable\\Table.txt");
+//        Set<String> save = new HashSet<>();
+//        for (String datum : data) {
+//            String tmp = datum + "\n";
+//            save.add(tmp);
+//        }
+//        IOEngine.appendToFile(save, "C:\\QuantikStateTable\\NewTable.txt");
 
+
+//        List<String> raw = (List<String>) IOEngine.read("C:\\QuantikStateTable\\NewTable.txt");
+//        List<StateData> data = new ArrayList<>();
+//        if (raw != null){
+//            data = load(raw);
+//        }
+//        Map<Integer, StateData> table = initTable(data);
 //        StateData root = new StateData();
-////        LogicEngine.move(root.getWhitePlayer(), root.getBoard(), root.getWhitePlayer().getHand().get(0), 0, 0);
+//        List<StateData> firstChildren = Solver.getNextStates(root, new HashMap<>());
+//        for (StateData child : firstChildren) {
+//            root.getChildrenHash().add(child.getHash());
+//        }
+//        table.put(root.getHash(), root);
 //
-//        List<StateData> tp = Solver.getNextStates(root);
-//        StateData grandChild = new StateData(tp.get(0));
-//        List<StateData> gtp = Solver.getNextStates(grandChild);
-//        StateData grandgrandChild = new StateData(gtp.get(0));
-//        List<StateData> ggtp = Solver.getNextStates(grandgrandChild);
+//        System.out.println(Solver.backpropagate(table.get(954273), table, 0));
 
-//        for (StateData stateData : ggtp){
-//            stateData.print();
+        List<String> tableBase = (List<String>) IOEngine.read(("C:\\QuantikStateTable\\FinalTable.txt"));
+        List<StateData> data = new ArrayList<>();
+        if (tableBase != null){
+            data = load(tableBase);
+        }
+        Map<Integer, StateData> table = initTable(data);
+        StateData root = new StateData();
+
+//        List<StateData> children = Solver.getNextStates(root, new HashMap<>());
+//        for (StateData child : children){
+//            child.print();
 //        }
 
-        StateData root = new StateData();
-        Solver.solve(root);
-
-//        String first = "SbS";
-//        String firstEqual = "CbC";
-//        String second = "SbB";
-//        String secondEqual = "CaA";
-//
-//        System.out.println(placementHistoryHash(first));
-//        System.out.println("-----------");
-//        System.out.println(placementHistoryHash(firstEqual));
-//        System.out.println("-----------");
-//        System.out.println(placementHistoryHash(second));
-//        System.out.println("-----------");
-//        System.out.println(placementHistoryHash(secondEqual));
 
 
-//        char[][] matrix = {
-//                {'S', '.', '.'},
-//                {'.', '.', '.'},
-//                {'.', '.', '.'}
-//        };
-//        rotateMatrix(matrix,3);
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int i1 = 0; i1 < matrix[i].length; i1++) {
-//                System.out.print(matrix[i][i1]);
-//            }
-//            System.out.println();
+        StateData best = getBestMove(root, table);
+        best.print();
+        System.out.println("------------");
+        best = getBestMove(best, table);
+        best.print();
+        System.out.println("------------");
+        best = getBestMove(best, table);
+        best.print();
+//        play(best,1,2, 's').print();
+
+        System.out.println("------------");
+
+
+
+//        best = getBestMove(best, table);
+//        best.print();
+//        System.out.println("------------");
+//        Collection<StateData> dataCollection = table.values();
+
+
+//        for (StateData stateData : dataCollection) {
+//            System.out.println(stateData.getHash());
+//            Solver.backpropagate(stateData, table, 0);
+//        }
+
+//        Set<String> save = new HashSet<>();
+//        for (StateData stateData : dataCollection) {
+//            save.add(stateData.toString());
 //        }
 
 
